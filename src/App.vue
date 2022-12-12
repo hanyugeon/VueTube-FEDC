@@ -91,7 +91,6 @@ export default {
       }
     },
     onModalClose() {
-      console.log("hello");
       this.isModalViewing = false;
       return;
     },

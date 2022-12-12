@@ -1,4 +1,5 @@
-import { API_END_POINT, API_KEY } from "./apiKeys";
+const API_END_POINT = process.env.VUE_APP_API_END_POINT;
+const API_KEY = process.env.VUE_APP_API_KEY;
 
 export const requestMovieList = async (keywords) => {
   try {
