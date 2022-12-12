@@ -1,26 +1,259 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <!-- Modal -->
+  <section class="modal" v-if="isModalViewing" @click.self="onModalClose()">
+    <article class="modal-container">
+      <img class="movie-poster" :src="movieDetail.Poster" />
+      <h2>{{ movieDetail.Title }}</h2>
+      <span>{{ movieDetail.Year }}</span>
+      <span>{{ movieDetail.Rated }}</span>
+      <span>{{ movieDetail.Released }}</span>
+      <span>{{ movieDetail.Runtime }}</span>
+      <span>{{ movieDetail.Plot }}</span>
+      <button class="modal-button-close" @click="onModalClose()">Close</button>
+    </article>
+  </section>
+
+  <!-- Header -->
+  <header class="header">
+    <section class="header-container">
+      <article class="header__start">
+        <h2>VueTube</h2>
+      </article>
+      <article class="header__middle">
+        <input
+          class="header-search-input"
+          type="string"
+          placeholder="Search Movie"
+          v-model="searchInputValue"
+          v-on:keyup.enter="onSearch()"
+        />
+        <button class="header-search-button" @click="onSearch()">GO</button>
+      </article>
+      <article class="header__end">
+        <h2></h2>
+      </article>
+    </section>
+  </header>
+
+  <!-- movie -->
+  <main class="movie">
+    <section class="movie-container">
+      <article
+        class="movie-item"
+        v-for="movieItem in movieList"
+        :key="movieItem.imdbID"
+        @click="onDetail(movieItem.imdbID)"
+      >
+        <img class="movie-poster" :src="movieItem.Poster" />
+        <span>{{ movieItem.Title }}</span>
+      </article>
+    </section>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { requestMovieList, requestMovieDetail } from "../utils/api.js";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      searchInputValue: "",
+      movieList: [],
+      movieDetail: {},
+      isModalViewing: false,
+    };
+  },
+  methods: {
+    async onSearch() {
+      try {
+        if (!this.searchInputValue) return;
+
+        const response = await requestMovieList(this.searchInputValue);
+        this.movieList = response.Search;
+
+        return;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    async onDetail(imdbID) {
+      try {
+        if (this.isModalViewing) return;
+
+        const response = await requestMovieDetail(imdbID);
+        this.isModalViewing = true;
+        this.movieDetail = {};
+        this.movieDetail = response;
+
+        return;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    onModalClose() {
+      console.log("hello");
+      this.isModalViewing = false;
+      return;
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+<style scoped lang="scss">
+.modal {
+  position: fixed;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  background-color: #00000040;
+}
+
+.modal-container {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  box-sizing: border-box;
+  width: 340px;
+  height: 520px;
+  padding: 20px;
+  border-radius: 8px;
+  font-size: 18px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background-color: #bee3f8;
+  box-shadow: 0px 0px 20px 0px #ffffffa0;
+}
+
+.modal-button-close {
+  width: auto;
+  height: 40px;
+  border-radius: 16px;
+  border: 0;
+  margin: 10px;
+  background-color: #4299e1;
+}
+
+.header {
+  display: block;
+  align-items: center;
+  justify-content: space-around;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 60px;
+  background-color: #4299e1;
+  box-shadow: 0px 0px 20px 0px #00000040;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: 100%;
+}
+
+.header__start {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 100%;
+}
+
+.header__middle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: 100%;
+}
+
+.header__end {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 100%;
+}
+
+.header-search-input {
+  width: 180px;
+  height: 40px;
+  border-radius: 36px 0 0 36px;
+  border: 0;
+}
+
+.header-search-button {
+  width: 42px;
+  height: 42px;
+  border-radius: 0 36px 36px 0;
+  border: 0;
+  background-color: #bee3f8;
+}
+
+.movie {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: auto;
+  padding-top: 60px;
+}
+
+.movie-container {
+  display: grid;
+  place-items: center;
+  max-width: 1280px;
+  height: 100%;
+  grid-template-columns: repeat(2, 0.8fr);
+}
+
+.movie-item {
+  display: grid;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 280px;
+  height: 420px;
+  padding: 10px;
+  margin: 20px 10px 10px 10px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #ebf8ff;
+  box-shadow: 0px 0px 20px 0px #00000040;
+}
+
+.movie-poster {
+  width: 243px;
+  height: 360px;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px #00000040;
+}
+
+@media screen and (max-width: 768px) {
+  .modal {
+    padding: 0;
+  }
+
+  .header__start {
+    width: 30%;
+  }
+
+  .header__middle {
+    width: 70%;
+  }
+
+  .header__end {
+    display: none;
+  }
+
+  .movie-container {
+    grid-template-columns: repeat(1, 0.8fr);
+  }
 }
 </style>
