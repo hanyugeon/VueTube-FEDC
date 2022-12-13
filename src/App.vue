@@ -14,26 +14,7 @@
   </section>
 
   <!-- Header -->
-  <header class="header">
-    <section class="header-container">
-      <article class="header__start">
-        <h2>VueTube</h2>
-      </article>
-      <article class="header__middle">
-        <input
-          class="header-search-input"
-          type="string"
-          placeholder="Search Movie"
-          v-model="searchInputValue"
-          v-on:keyup.enter="onSearch()"
-        />
-        <button class="header-search-button" @click="onSearch()">GO</button>
-      </article>
-      <article class="header__end">
-        <h2></h2>
-      </article>
-    </section>
-  </header>
+  <HeaderComponent />
 
   <!-- movie -->
   <main class="movie">
@@ -52,7 +33,8 @@
 </template>
 
 <script>
-import { requestMovieList, requestMovieDetail } from "../utils/api.js";
+import HeaderComponent from "./components/header/HeaderComponent";
+import { requestMovieList, requestMovieDetail } from "./utils/api.js";
 
 export default {
   data() {
@@ -62,6 +44,9 @@ export default {
       movieDetail: {},
       isModalViewing: false,
     };
+  },
+  components: {
+    HeaderComponent,
   },
   methods: {
     async onSearch() {
@@ -136,65 +121,6 @@ export default {
   background-color: #4299e1;
 }
 
-.header {
-  display: block;
-  align-items: center;
-  justify-content: space-around;
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-  height: 60px;
-  background-color: #4299e1;
-  box-shadow: 0px 0px 20px 0px #00000040;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 100%;
-  height: 100%;
-}
-
-.header__start {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  height: 100%;
-}
-
-.header__middle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60%;
-  height: 100%;
-}
-
-.header__end {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20%;
-  height: 100%;
-}
-
-.header-search-input {
-  width: 180px;
-  height: 40px;
-  border-radius: 36px 0 0 36px;
-  border: 0;
-}
-
-.header-search-button {
-  width: 42px;
-  height: 42px;
-  border-radius: 0 36px 36px 0;
-  border: 0;
-  background-color: #bee3f8;
-}
-
 .movie {
   display: grid;
   place-items: center;
@@ -237,18 +163,6 @@ export default {
 @media screen and (max-width: 768px) {
   .modal {
     padding: 0;
-  }
-
-  .header__start {
-    width: 30%;
-  }
-
-  .header__middle {
-    width: 70%;
-  }
-
-  .header__end {
-    display: none;
   }
 
   .movie-container {
