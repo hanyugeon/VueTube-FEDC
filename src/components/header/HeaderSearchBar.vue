@@ -2,18 +2,23 @@
   <article class="header__middle">
     <input
       class="header-search-input"
-      type="string"
+      type="text"
       placeholder="Search Movie"
       v-model="searchInputValue"
+      @keyup.enter="onSearchSubmit"
     />
-    <button class="header-search-button">GO</button>
+    <button class="header-search-button" @click="onSearchSubmit">GO</button>
   </article>
 </template>
 
-<!-- v-on:keyup.enter="onSearch()" -->
-<!-- <button class="header-search-button" @click="onSearch()">GO</button> -->
-
-<script></script>
+<script>
+export default {
+  name: "HeaderSearchBar",
+  props: {
+    onSearchSubmit: Function,
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .header__middle {

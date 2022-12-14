@@ -2,7 +2,7 @@
   <header class="header">
     <HeaderContainer>
       <HeaderStart />
-      <HeaderSearchBar />
+      <HeaderSearchBar ref="searchBar" :onSearchSubmit="onSearchSubmit" />
       <HeaderEnd />
     </HeaderContainer>
   </header>
@@ -15,6 +15,9 @@ import HeaderSearchBar from "./HeaderSearchBar.vue";
 import HeaderEnd from "./HeaderEnd.vue";
 
 export default {
+  props: {
+    onSearchSubmit: Function,
+  },
   components: {
     HeaderContainer,
     HeaderStart,

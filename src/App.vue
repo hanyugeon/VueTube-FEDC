@@ -14,7 +14,7 @@
   </section>
 
   <!-- Header -->
-  <HeaderComponent />
+  <HeaderComponent ref="headerComponent" :onSearchSubmit="onSearchSubmit" />
 
   <!-- movie -->
   <main class="movie">
@@ -37,6 +37,9 @@ import HeaderComponent from "./components/header/HeaderComponent";
 import { requestMovieList, requestMovieDetail } from "./utils/api.js";
 
 export default {
+  components: {
+    HeaderComponent,
+  },
   data() {
     return {
       searchInputValue: "",
@@ -45,14 +48,22 @@ export default {
       isModalViewing: false,
     };
   },
-  components: {
-    HeaderComponent,
-  },
   methods: {
-    async onSearch() {
-      try {
-        if (!this.searchInputValue) return;
+    getSearchInputValue() {
+      const $header = this.$refs.headerComponent;
+      const $searchBar = $header.$refs.searchBar;
+      const inputValue = $searchBar.searchInputValue;
 
+      return inputValue;
+    },
+    setSearchInputValue(value) {
+      this.searchInputValue = value;
+    },
+    async onSearchSubmit() {
+      try {
+        if (!this.getSearchInputValue()) return;
+
+        this.setSearchInputValue(this.getSearchInputValue());
         const response = await requestMovieList(this.searchInputValue);
         this.movieList = response.Search;
 
