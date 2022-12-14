@@ -3,7 +3,7 @@
     class="movie-item"
     v-for="movieItem in movieList"
     :key="movieItem.imdbID"
-    @click="onDetail(movieItem.imdbID)"
+    @click="onClickMovieItem(movieItem.imdbID)"
   >
     <img class="movie-poster" :src="movieItem.Poster" />
     <span>{{ movieItem.Title }}</span>
@@ -16,7 +16,7 @@ export default {
     movieList: {
       type: Array,
     },
-    onDetail: {
+    onClickMovieItem: {
       type: Function,
     },
   },

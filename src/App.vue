@@ -5,7 +5,7 @@
     :onModalClose="onModalClose"
   />
   <HeaderComponent ref="headerComponent" :onSearchSubmit="onSearchSubmit" />
-  <MovieComponent :movieList="movieList" :onDetail="onDetail" />
+  <MovieComponent :movieList="movieList" :onClickMovieItem="onClickMovieItem" />
 </template>
 
 <script>
@@ -53,7 +53,7 @@ export default {
         throw new Error(error.message);
       }
     },
-    async onDetail(imdbID) {
+    async onClickMovieItem(imdbID) {
       try {
         if (this.isModalViewing) return;
 
