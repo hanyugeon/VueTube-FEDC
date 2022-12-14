@@ -1,28 +1,22 @@
 <template>
-  <section class="modal" v-if="isModalViewing" @click.self="onModalClose()">
-    <article class="modal-container">
-      <img class="movie-poster" :src="movieDetail.Poster" />
-      <h2>{{ movieDetail.Title }}</h2>
-      <span>{{ movieDetail.Year }}</span>
-      <span>{{ movieDetail.Rated }}</span>
-      <span>{{ movieDetail.Released }}</span>
-      <span>{{ movieDetail.Runtime }}</span>
-      <span>{{ movieDetail.Plot }}</span>
-      <button class="modal-button-close" @click="onModalClose()">Close</button>
-    </article>
-  </section>
-
+  <ModalComponent
+    :isModalViewing="isModalViewing"
+    :movieDetail="movieDetail"
+    :onModalClose="onModalClose"
+  />
   <HeaderComponent ref="headerComponent" :onSearchSubmit="onSearchSubmit" />
-  <MovieComponent :movieList="movieList" :onDetail="onDetail" />
+  <MovieComponent :movieList="movieList" :onClickMovieItem="onClickMovieItem" />
 </template>
 
 <script>
+import ModalComponent from "./components/modal/ModalComponent";
 import HeaderComponent from "./components/header/HeaderComponent";
 import MovieComponent from "./components/movie/MovieComponent";
 import { requestMovieList, requestMovieDetail } from "./utils/api.js";
 
 export default {
   components: {
+    ModalComponent,
     HeaderComponent,
     MovieComponent,
   },
@@ -45,6 +39,7 @@ export default {
     setSearchInputValue(value) {
       this.searchInputValue = value;
     },
+
     async onSearchSubmit() {
       try {
         if (!this.getSearchInputValue()) return;
@@ -58,7 +53,7 @@ export default {
         throw new Error(error.message);
       }
     },
-    async onDetail(imdbID) {
+    async onClickMovieItem(imdbID) {
       try {
         if (this.isModalViewing) return;
 
@@ -80,47 +75,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.modal {
-  position: fixed;
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  background-color: #00000040;
-}
-
-.modal-container {
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  box-sizing: border-box;
-  width: 340px;
-  height: 520px;
-  padding: 20px;
-  border-radius: 8px;
-  font-size: 18px;
-  overflow: auto;
-  overscroll-behavior: contain;
-  background-color: #bee3f8;
-  box-shadow: 0px 0px 20px 0px #ffffffa0;
-}
-
-.modal-button-close {
-  width: auto;
-  height: 40px;
-  border-radius: 16px;
-  border: 0;
-  margin: 10px;
-  background-color: #4299e1;
-}
-
-@media screen and (max-width: 768px) {
-  .modal {
-    padding: 0;
-  }
-}
-</style>
+<style scoped lang="scss"></style>

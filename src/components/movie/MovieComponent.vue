@@ -1,7 +1,7 @@
 <template>
   <main class="movie">
     <MovieContainer>
-      <MovieItems :movieList="movieList" :onDetail="onDetail" />
+      <MovieItems :movieList="movieList" :onClickMovieItem="onClickMovieItem" />
     </MovieContainer>
   </main>
 </template>
@@ -15,7 +15,7 @@ export default {
     movieList: {
       type: Array,
     },
-    onDetail: {
+    onClickMovieItem: {
       type: Function,
     },
   },
