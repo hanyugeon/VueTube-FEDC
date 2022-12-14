@@ -1,8 +1,7 @@
 <template>
-  <section class="modal" v-if="isModalViewing">
-    <!-- <section class="modal" v-if="isModalViewing" @click.self="onModalClose()"> -->
+  <section class="modal" v-if="isModalViewing" @click.self="onModalClose()">
     <ModalContainer>
-      <ModalMovieDetail :movieDetail="movieDetail" />
+      <ModalMovieDetail :movieDetail="movieDetail" :onModalClose="onModalClose" />
     </ModalContainer>
   </section>
 </template>
@@ -18,6 +17,9 @@ export default {
     },
     movieDetail: {
       type: Object,
+    },
+    onModalClose: {
+      type: Function,
     },
   },
   components: {

@@ -1,5 +1,9 @@
 <template>
-  <ModalComponent :isModalViewing="isModalViewing" />
+  <ModalComponent
+    :isModalViewing="isModalViewing"
+    :movieDetail="movieDetail"
+    :onModalClose="onModalClose"
+  />
   <HeaderComponent ref="headerComponent" :onSearchSubmit="onSearchSubmit" />
   <MovieComponent :movieList="movieList" :onDetail="onDetail" />
 </template>
@@ -35,6 +39,7 @@ export default {
     setSearchInputValue(value) {
       this.searchInputValue = value;
     },
+
     async onSearchSubmit() {
       try {
         if (!this.getSearchInputValue()) return;

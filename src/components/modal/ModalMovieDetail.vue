@@ -1,13 +1,12 @@
 <template>
-  <!-- <img class="movie-poster" :src="movieDetail.Poster" />
+  <img class="movie-poster" :src="movieDetail.Poster" />
   <h2>{{ movieDetail.Title }}</h2>
   <span>{{ movieDetail.Year }}</span>
   <span>{{ movieDetail.Rated }}</span>
   <span>{{ movieDetail.Released }}</span>
   <span>{{ movieDetail.Runtime }}</span>
   <span>{{ movieDetail.Plot }}</span>
-  <button class="modal-button-close" @click="onModalClose()">Close</button> -->
-  <div>ModalTest</div>
+  <button class="modal-button-close" @click="onModalClose()">Close</button>
 </template>
 
 <script>
@@ -15,6 +14,9 @@ export default {
   props: {
     movieDetail: {
       type: Object,
+    },
+    onModalClose: {
+      type: Function,
     },
   },
 };
