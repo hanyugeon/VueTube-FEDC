@@ -1,5 +1,4 @@
 <template>
-  <!-- Modal -->
   <section class="modal" v-if="isModalViewing" @click.self="onModalClose()">
     <article class="modal-container">
       <img class="movie-poster" :src="movieDetail.Poster" />
@@ -13,32 +12,19 @@
     </article>
   </section>
 
-  <!-- Header -->
   <HeaderComponent ref="headerComponent" :onSearchSubmit="onSearchSubmit" />
-
-  <!-- movie -->
-  <main class="movie">
-    <section class="movie-container">
-      <article
-        class="movie-item"
-        v-for="movieItem in movieList"
-        :key="movieItem.imdbID"
-        @click="onDetail(movieItem.imdbID)"
-      >
-        <img class="movie-poster" :src="movieItem.Poster" />
-        <span>{{ movieItem.Title }}</span>
-      </article>
-    </section>
-  </main>
+  <MovieComponent :movieList="movieList" :onDetail="onDetail" />
 </template>
 
 <script>
 import HeaderComponent from "./components/header/HeaderComponent";
+import MovieComponent from "./components/movie/MovieComponent";
 import { requestMovieList, requestMovieDetail } from "./utils/api.js";
 
 export default {
   components: {
     HeaderComponent,
+    MovieComponent,
   },
   data() {
     return {
@@ -132,52 +118,9 @@ export default {
   background-color: #4299e1;
 }
 
-.movie {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: auto;
-  padding-top: 60px;
-}
-
-.movie-container {
-  display: grid;
-  place-items: center;
-  max-width: 1280px;
-  height: 100%;
-  grid-template-columns: repeat(2, 0.8fr);
-}
-
-.movie-item {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 280px;
-  height: 420px;
-  padding: 10px;
-  margin: 20px 10px 10px 10px;
-  border-radius: 16px;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: #ebf8ff;
-  box-shadow: 0px 0px 20px 0px #00000040;
-}
-
-.movie-poster {
-  width: 243px;
-  height: 360px;
-  border-radius: 16px;
-  box-shadow: 0px 0px 20px 0px #00000040;
-}
-
 @media screen and (max-width: 768px) {
   .modal {
     padding: 0;
-  }
-
-  .movie-container {
-    grid-template-columns: repeat(1, 0.8fr);
   }
 }
 </style>
